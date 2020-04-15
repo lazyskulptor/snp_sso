@@ -1,0 +1,25 @@
+{
+  "name": "snp-sso",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start": "node ./bin/www"
+  },
+  "dependencies": {
+    "cookie-parser": "~1.4.4",
+    "cors": "^2.8.5",
+    "debug": "~2.6.9",
+    "dotenv": "^8.2.0",
+    "ejs": "~2.6.1",
+    "express": "~4.16.1",
+    "helmet": "^3.21.3",
+    "http-errors": "~1.6.3",
+    "ioredis": "^4.16.0",
+    "lodash": "latest",
+    "mongodb": "^3.5.5",
+    "morgan": "~1.9.1",
+    "node-rsa": "^1.0.8",
+    "oidc-provider": "^6.23.3",
+    "querystring": "^0.2.0"
+  }
+}
