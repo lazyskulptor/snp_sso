@@ -28,7 +28,6 @@ class RedisAdapter {
   }
 
   async upsert(id, payload, expiresIn) {
-    console.log('***** upsert');
     const key = this.key(id);
     const store = consumable.has(this.name)
       ? { payload: JSON.stringify(payload) } : JSON.stringify(payload);
@@ -67,13 +66,9 @@ class RedisAdapter {
   }
 
   async find(id) {
-    console.log('******  find id ' + id);
-    console.log('****** ' + this.key(id));
     const data = consumable.has(this.name)
       ? await client.hgetall(this.key(id))
       : await client.get(this.key(id));
-
-    console.log(data);
 
     if (isEmpty(data)) {
       return undefined;
@@ -90,13 +85,12 @@ class RedisAdapter {
   }
 
   async findByUid(uid) {
-    console.log('***** findByUid');
+  
     const id = await client.get(uidKeyFor(uid));
     return this.find(id);
   }
 
   async findByUserCode(userCode) {
-    console.log('***** findByUserCode');
     const id = await client.get(userCodeKeyFor(userCode));
     return this.find(id);
   }
@@ -115,12 +109,10 @@ class RedisAdapter {
   }
 
   async consume(id) {
-    console.log('***** consume');
     await client.hset(this.key(id), 'consumed', Math.floor(Date.now() / 1000));
   }
 
   key(id) {
-    console.log('***** key');
     return `${this.name}:${id}`;
   }
 }

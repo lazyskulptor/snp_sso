@@ -12,26 +12,28 @@ const selectAccount = new Prompt({
 
 // add to index 0, order goes select_account > login > consent
 interactions.add(selectAccount, 0);
-// interactions.remove('consent');
 let consent = interactions.get('consent');
 consent.checks.remove('native_client_prompt');
-consent.checks.forEach(ck => {
-  // console.log(ck);
-})
 interactions.remove('consent');
 interactions.add(consent);
-// console.log(interactions)
 
 module.exports = {
   clients: [
     {
-      client_id: 'oidcCLIENT',
+      client_id: 'sample_client',
       client_secret: 'XXXXXXXXXX',
       grant_types: ['refresh_token', 'authorization_code'],
-      redirect_uris: ['http://localhost:4000/redirected', "http://localhost:3000/redirected"],
-      post_logout_redirect_uris : ['http://localhost:3000/home', 'http://localhost:4000']
+      redirect_uris: ['http://localhost:4000/redirected', "http://localhost:3000/redirected", "http://localhost:3000/"],
+      post_logout_redirect_uris : ['http://localhost:3000/home', 'http://localhost:4000'],
+      application_type: 'native',
+      token_endpoint_auth_method: 'none',
+      introspection_endpoint_auth_method: 'client_secret_basic'
     }
   ],
+  pkce: {
+    methods: ['S256'],
+    required: true
+  },
   interactions: {
     policy: interactions,
     url(ctx, interaction) { // eslint-disable-line no-unused-vars
@@ -50,6 +52,9 @@ module.exports = {
     profile: ['birthdate', 'family_name', 'gender', 'given_name', 'locale', 'middle_name', 'name',
       'nickname', 'picture', 'preferred_username', 'profile', 'updated_at', 'website', 'zoneinfo'],
   },
+  // clientDefaults: {
+  //   token_endpoint_auth_method: 'client_secret_post'
+  // },
   features: {
     sessionManagement : { enabled : true },
     devInteractions: { enabled: false }, // defaults to true
@@ -59,7 +64,11 @@ module.exports = {
     clientCredentials : { enabled: true},
     revocation: { enabled: false }, // defaults to false
   },
-  introspectionEndpointAuthMethods : ['client_secret_basic'],
+  // introspectionEndpointAuthMethods : ['client_secret_basic', 'client_secret_post'],
+  // introspectionEndpointAuthMethods : ['client_secret_basic'],
+  issueRefreshToken: async function issueRefreshToken(ctx, client, code) {
+    return client.grantTypeAllowed('refresh_token');
+  },
   jwks: {
     keys: [
       {

@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www"
+    "start": "node app.js"
   },
   "dependencies": {
     "cookie-parser": "~1.4.4",
@@ -19,7 +19,7 @@
     "mongodb": "^3.5.5",
     "morgan": "~1.9.1",
     "node-rsa": "^1.0.8",
-    "oidc-provider": "^6.23.3",
+    "oidc-provider": "^6.29.8",
     "querystring": "^0.2.0"
   }
 }

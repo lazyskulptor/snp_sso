@@ -36,7 +36,7 @@ module.exports = (app, provider) => {
   const { constructor: { errors: { SessionNotFound } } } = provider;
 
   app.use(cors({
-    "origin": "*",
+    "origin": "http://localhost:3000",
     "methods": "GET,HEAD,PUT,PATCH,POST,DELETE",
     "preflightContinue": false,
     "optionsSuccessStatus": 204
@@ -69,12 +69,9 @@ module.exports = (app, provider) => {
 
 
       const client = await provider.Client.find(params.client_id);
-      console.log('1234')
-      console.log(client)
 
       switch (prompt.name) {
         case 'select_account': {
-          console.log('select_account');
           if (!session) {
             return provider.interactionFinished(req, res, { select_account: {} }, { mergeWithLastSubmission: false });
           }
@@ -97,7 +94,6 @@ module.exports = (app, provider) => {
           });
         }
         case 'login': {
-          console.log('login');
           return res.render('login', {
             client,
             uid,
